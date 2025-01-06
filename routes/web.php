@@ -2,10 +2,15 @@
 
 use App\Http\Controllers\deletePost;
 use App\Http\Controllers\DeletePostController;
+use App\Http\Controllers\postController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Route as RoutingRoute;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Console\Input\Input;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,9 +66,21 @@ Route::get('/posts/create', function(){
     //    'created_at' => now(),
     //    'updated_at' => now(),
     //]);
-    $post = Post::factory()->count(20)->create();
+    //$post = Post::factory()->count(20)->create();
     //return view('posts.create', compact('post'));
-    return $post;
+    //return $post;
 })->name('post.index');
 
 Route::get('/posts/delete/{id}', [DeletePostController::class, 'deletePost']);
+
+//route dinamiche
+
+Route::get('/post/{post}', [postController::class, 'getSinglePost'])->name('posts.show');
+
+//modificare un post con una put
+
+Route::put('/post/{id}', [postController::class, 'putSinglePost'])->name('post.update');
+
+    //eliminare un post
+
+Route::delete('post/delete', [postController::class, 'deleteSinglePost']);
